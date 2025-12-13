@@ -11,6 +11,27 @@ Input:  "coffee shop, morning light, 4 scenes"
 Output: 4 professional marketing images
 ```
 
+## Requirements
+
+**System:**
+- Python 3.8 or higher
+- 2GB RAM
+- Internet connection
+
+**API Key:**
+- Bria API key (free at https://bria.ai/)
+
+**Check Python version:**
+```bash
+python3 --version
+# Should show Python 3.8.0 or higher
+```
+
+**Don't have Python 3.8+?**
+- macOS: `brew install python3` or https://www.python.org/downloads/
+- Linux: `sudo apt install python3` or `sudo yum install python3`
+- Windows: https://www.python.org/downloads/
+
 ## Setup
 
 ```bash
@@ -24,7 +45,12 @@ python3 CreativeCampaignMaker.py
 
 Opens at: http://localhost:7861
 
-Get API key: https://bria.ai/
+**Get Bria API key:**
+1. Go to https://bria.ai/
+2. Sign up (free)
+3. Navigate to API section
+4. Copy your API key
+5. Paste into `.env` file
 
 ## Bria FIBO Integration
 
@@ -111,12 +137,6 @@ refined2 = generate_structured(
 - Convert frames to 4-second videos
 - Uses Stable Video Diffusion
 
-## Requirements
-
-- Python 3.8+
-- Bria API key
-- 2GB RAM
-
 ## Configuration
 
 Create `.env` file:
@@ -125,13 +145,6 @@ BRIA_API_KEY=your_key_here
 BRIA_BASE_URL=https://engine.prod.bria-api.com
 REPLICATE_API_TOKEN=your_token_here
 ```
-
-Get your API key:
-1. Go to https://bria.ai/
-2. Sign up
-3. Navigate to API section
-4. Copy your API key
-5. Paste into `.env` file
 
 ## How to Use
 
@@ -173,8 +186,15 @@ Normal on first request. Auto-retries. Takes 20-30 seconds.
 pip3 install -r requirements.txt --force-reinstall
 ```
 
-**SSL Warning**
-The urllib3 LibreSSL warning is normal on macOS. App still works.
+**SSL Warning (macOS)**
+The urllib3 LibreSSL warning is normal. App still works.
+
+**Port already in use**
+```bash
+# Kill existing process
+lsof -i :7861
+kill -9 <PID>
+```
 
 ## Why Bria FIBO
 
