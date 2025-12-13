@@ -1,0 +1,12 @@
+gradio==4.44.0
+pillow==10.4.0
+numpy==1.26.4
+torch 
+torchvision
+torchaudio
+accelerate==0.34.2
+safetensors==0.4.4
+transformers==4.44.2
+diffusers==0.30.3
+controlnet-aux==0.0.9
+opencv-python==4.10.0.84
