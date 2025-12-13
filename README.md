@@ -14,7 +14,7 @@ Output: 4 professional marketing images
 ## Setup
 
 ```bash
-git clone https://github.com/motti100/creative-campaign-maker.git
+git clone https://github.com/motti100/CreativeCampaignMaker.git
 cd creative-campaign-maker
 pip install -r requirements.txt
 cp .env.example .env
