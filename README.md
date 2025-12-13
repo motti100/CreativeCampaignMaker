@@ -1,22 +1,20 @@
 # Creative Campaign Maker
 
-Storyboard generator for marketing campaigns using Bria FIBO VLM.
+Multi-scene storyboard generator for marketing campaigns using Bria FIBO VLM.
 
 ## What it does
 
-Enter a campaign brief with multiple scenes, and the app generates professional images for each scene. Bria's FIBO VLM expands each scene description into detailed structured prompts, then generates the images.
+Enter a campaign brief with multiple scenes and generate professional images for each scene. Bria's FIBO VLM automatically expands each scene description into detailed structured prompts with professional photography specifications (lighting, camera angles, composition), then generates the images.
 
-**Example:**
-
-Input this campaign brief:
+**Example Input:**
 ```
-Scene 1: Wide establishing shot of artisan coffee roastery at golden hour
-Scene 2: Medium shot of barista's hands pouring espresso
-Scene 3: Intimate close-up of coffee cup on rustic table
-Scene 4: Lifestyle shot of person enjoying coffee by window
+Scene 1: Wide establishing shot of artisan coffee roastery at golden hour, warm amber light streaming through industrial windows, 24mm lens
+Scene 2: Medium shot of barista's hands pouring espresso, soft studio lighting with dramatic side rim light, 50mm lens
+Scene 3: Intimate close-up of coffee cup on rustic table, steam rising with golden backlight, 85mm macro lens
+Scene 4: Lifestyle shot of person enjoying coffee by window, natural morning light, 35mm lens
 ```
 
-Output: 4 professional marketing images (one per scene)
+**Output:** 4 professional marketing images matching each scene description.
 
 ## Requirements
 
@@ -61,77 +59,142 @@ Opens at: http://localhost:7861
 
 ## How to Use
 
-### Storyboard Tab
+The app has 6 tabs:
 
-1. Enter your campaign brief - multiple scenes, one per line or paragraph
+### 1. Storyboard Tab - Generate Multi-Scene Campaigns
+
+**Quick start with templates:**
+1. Click "Premium Coffee" or "Tech Launch" or "Corporate" to load a template
 2. Choose aspect ratio (16:9, 1:1, 9:16, etc.)
 3. Set seed (optional - leave blank for random)
 4. Select negative prompt preset
 5. Click "Generate Storyboard"
-6. Wait 2-3 minutes for all scenes to generate
+6. Wait 2-3 minutes for all scenes
 
-**Built-in Templates:**
-- Premium Coffee (4 scenes)
-- Tech Launch (4 scenes)
-- Corporate (4 scenes)
+**Custom campaign:**
+1. Enter your scene descriptions in the Campaign Brief box
+2. One scene per line or paragraph
+3. Include details like lighting, camera angles, lens focal length
+4. Set aspect ratio and seed
+5. Click "Generate Storyboard"
 
-Click any template to load it, then click Generate.
+**Reference Image (optional):**
+- Upload a reference image to influence all scenes with a specific style
+- Useful for maintaining brand consistency across scenes
 
-### Scene Variation Tab
+**Export options:**
+- Export Brief (TXT) - saves your scene descriptions
+- Export Structured (JSON) - saves the FIBO VLM generated structured prompts
 
-1. Load scenes from your storyboard
-2. Select a scene
-3. Choose what to vary: Lighting / Camera Angles / Style
-4. Generate 5 variations
-5. Or use batch mode to generate multiple versions with different seeds
+### 2. Scene Variation Tab - Explore Parameters
 
-### Refinement Tab
+Systematically explore lighting, camera angles, or style variations while keeping everything else constant.
 
-1. Select a scene from storyboard or variations
-2. Enter what you want to change (e.g., "add dramatic lighting")
-3. Click Refine
-4. Changes build on previous refinements
+**How to use:**
+1. Click "Load Storyboard Scenes"
+2. Select a scene from dropdown
+3. Choose one parameter to vary:
+   - Lighting Conditions
+   - Camera Angles
+   - Style & Mood
+4. Click "Generate 5 Variations"
+5. System locks all other parameters using same seed
+6. Get 5 versions showing only that parameter changing
 
-### Prompt Library Tab
+**Batch Variations:**
+- Generate 2-8 variations with same prompt, different seeds
+- Set number of variations
+- Set base seed (optional)
+- Click "Generate Batch"
 
-Save your best structured prompts for reuse.
+### 3. Refinement Tab - Targeted Editing
 
-### Video Export Tab
+Make specific changes without regenerating. Chained refinements preserve previous edits.
+
+**How to use:**
+1. Select image source: Storyboard Scenes or Parameter Variations
+2. Click "Load Images"
+3. Choose a scene from dropdown
+4. Enter what you want to change (e.g., "remove people")
+5. Set strength (0.1-1.0)
+6. Keep same seed checkbox (recommended)
+7. Click "Refine Image"
+8. See Before & After comparison
+
+**Chaining refinements:**
+- Each refinement builds on the previous one
+- Example: "remove people" → "add dramatic lighting" → "change to sunset"
+- All changes are preserved
+
+**Export options:**
+- Marketing Document (HTML) - shows all refinements with before/after
+- Export Workflow (JSON) - saves complete refinement chain
+- Clear History - start fresh
+
+### 4. Prompt Library Tab - Save & Reuse
+
+Save successful structured prompts for reuse.
+
+1. Enter a name for your prompt
+2. Paste structured prompt JSON
+3. Click "Save to Library"
+4. Later: select from dropdown and click "Load from Library"
+
+### 5. Video Export Tab - Animate Frames
 
 Convert static frames to 4-second videos using Stable Video Diffusion.
 
+1. Click "Load Storyboard"
+2. Select a scene
+3. Adjust motion amount slider (1-255)
+4. Click "Generate AI Video"
+5. Wait 1-2 minutes
+6. Download video
+
+### 6. Analytics Tab - Track Usage
+
+View session metrics:
+- Scenes Generated
+- Videos Created
+- AI Frames
+- API Calls
+- Session time
+- Deterministic rate
+
+Click "Refresh Metrics" to update.
+
 ## Bria FIBO Integration
 
-The app uses Bria's FIBO API in two ways:
+The app uses Bria's FIBO API:
 
 **1. Structured Prompt Generation** - `/v2/structured_prompt/generate`
 
-For each scene in your brief, the app calls:
+For each scene, converts simple text into detailed structured prompts:
 
 ```python
 response = requests.post(
     "https://engine.prod.bria-api.com/v2/structured_prompt/generate",
     headers={"api_token": BRIA_API_KEY},
-    json={"prompt": scene_text, "sync": True, "ip_signal": True}
+    json={
+        "prompt": "Wide shot of coffee roastery at golden hour",
+        "sync": True,
+        "ip_signal": True
+    }
 )
 structured = json.loads(response.json()["result"]["structured_prompt"])
 ```
 
-This converts:
-```
-"Wide shot of coffee roastery at golden hour"
-```
-
-Into detailed JSON with:
+This generates:
 - Object descriptions and placement
-- Lighting setup (direction, shadows, conditions)
+- Lighting setup (conditions, direction, shadows)
 - Camera settings (focal length, angle, depth of field)
-- Composition rules
+- Composition and framing rules
 - Color schemes and mood
+- Aesthetic preferences
 
 **2. Image Generation** - `/v2/image/generate`
 
-Then generates the actual image:
+Generates images from structured prompts:
 
 ```python
 response = requests.post(
@@ -147,63 +210,49 @@ response = requests.post(
         "sync": True
     }
 )
+image_url = response.json()["result"]["image_url"]
 ```
 
-**3. Refinements**
+**3. Refinements (Chained)**
 
-When you refine a scene, the app sends the existing structured prompt back to FIBO VLM with your instruction:
+Makes targeted changes while preserving everything else:
 
 ```python
-# You have a scene already generated
-existing_structured = {...}  # Previous structured prompt
+# Original scene
+base_structured = {...}  # Generated from "coffee roastery"
 
-# You want to change something
-refined = client.generate_structured_prompt(
-    prompt="change lighting to dramatic side lighting",
-    original_structured=existing_structured  # Preserves everything else
+# First refinement
+refined_1 = client.generate_structured_prompt(
+    prompt="remove people",
+    original_structured=base_structured  # Keeps all other details
 )
 
-# Only lighting changes, all other details stay the same
+# Second refinement builds on first
+refined_2 = client.generate_structured_prompt(
+    prompt="add dramatic lighting",
+    original_structured=refined_1  # Keeps "no people" + other details
+)
+
+# Result: Coffee roastery without people, with dramatic lighting
 ```
 
-This lets you make targeted changes without regenerating from scratch.
+**4. Reference Images (IP Adapter)**
 
-## Features
+Maintain consistent style across all scenes:
 
-**Storyboard Generation**
-- Enter 2-6 scene descriptions in a campaign brief
-- Each scene gets expanded via FIBO VLM
-- All scenes generated with consistent settings
-- Optional reference image for style consistency
-- Export brief as TXT or structured prompts as JSON
+```python
+# Convert reference image to base64
+ref_img_base64 = base64.b64encode(image_bytes).decode('utf-8')
 
-**Parameter Exploration**
-- Take any generated scene
-- Vary one parameter: Lighting / Camera Angles / Style & Mood
-- Generates 5 variations showing only that parameter changing
-- Same seed = pure comparison
-- Batch mode generates 2-8 variations with different seeds
-
-**Refinement Studio**
-- Select any scene
-- Make changes with natural language
-- Each refinement builds on previous changes
-- Visual diff shows what changed
-- Export refinement workflow
-
-**Prompt Library**
-- Save successful structured prompts
-- Load and reuse for similar projects
-
-**Video Export**
-- Convert any frame to 4-second video
-- Uses Stable Video Diffusion
-- Motion control slider
-
-**Analytics**
-- Track scenes generated
-- Monitor API usage
-- Session metrics
+# Generate with reference
+payload = {
+    "structured_prompt": json.dumps(structured),
+    "images": [ref_img_base64],
+    "image_weight": 0.8,  # Reference strength
+    "ip_signal": True,
+    ...
+}
+```
 
 ## Configuration
 
@@ -214,7 +263,27 @@ BRIA_BASE_URL=https://engine.prod.bria-api.com
 REPLICATE_API_TOKEN=your_token_here
 ```
 
-The `REPLICATE_API_TOKEN` is optional - only needed for video generation.
+`REPLICATE_API_TOKEN` is optional - only needed for video generation.
+
+## Built-in Templates
+
+**Premium Coffee** (4 scenes)
+- Scene 1: Wide shot of artisan coffee roastery at golden hour
+- Scene 2: Medium shot of barista's hands pouring espresso
+- Scene 3: Intimate close-up of coffee cup on rustic table
+- Scene 4: Lifestyle shot of person enjoying coffee by window
+
+**Tech Launch** (4 scenes)
+- Scene 1: Dramatic low-angle of smartphone emerging from shadow
+- Scene 2: Dynamic overhead view on minimalist surface
+- Scene 3: Extreme macro of screen showing vibrant interface
+- Scene 4: Lifestyle shot of hand holding device against urban bokeh
+
+**Corporate** (4 scenes)
+- Scene 1: Wide cinematic shot of modern glass skyscraper at blue hour
+- Scene 2: Medium shot of diverse team collaborating in conference room
+- Scene 3: Close-up of hands over laptop showing data
+- Scene 4: Environmental portrait in modern office
 
 ## Troubleshooting
 
@@ -225,7 +294,7 @@ cat .env | grep BRIA_API_KEY
 ```
 
 **Gateway Timeout (504)**
-Normal on first request. The app auto-retries. Takes 20-30 seconds.
+Normal on first request. App auto-retries. Takes 20-30 seconds.
 
 **Module errors**
 ```bash
@@ -242,15 +311,17 @@ kill -9 <PID>
 ```
 
 **Generation is slow**
-First scene takes 30-60 seconds (model loads on server). After that, each scene takes 10-20 seconds.
+First scene: 30-60 seconds (model loads on server)
+Subsequent scenes: 10-20 seconds each
 
 ## Why Bria FIBO
 
 - **Commercial-safe**: All generated images licensed for commercial use
 - **VLM intelligence**: Understands photography and marketing context
-- **Structured control**: Detailed control over lighting, camera, composition
-- **Iterative refinement**: Make changes without regenerating everything
+- **Structured control**: Fine control over lighting, camera, composition
+- **Iterative refinement**: Make targeted changes without regenerating
 - **Professional quality**: Marketing-ready output
+- **Consistent branding**: Reference images maintain style across scenes
 
 ## License
 
