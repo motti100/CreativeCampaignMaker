@@ -15,12 +15,14 @@ Output: 4 professional marketing images
 
 ```bash
 git clone https://github.com/motti100/CreativeCampaignMaker.git
-cd creative-campaign-maker
-pip install -r requirements.txt
+cd CreativeCampaignMaker
+pip3 install -r requirements.txt
 cp .env.example .env
-# Add your Bria API key to .env
-python CreativeCampaignMaker.py
+# Edit .env and add your Bria API key
+python3 CreativeCampaignMaker.py
 ```
+
+Opens at: http://localhost:7861
 
 Get API key: https://bria.ai/
 
@@ -117,33 +119,28 @@ refined2 = generate_structured(
 
 ## Configuration
 
-`.env` file:
+Create `.env` file:
 ```
-BRIA_API_KEY=your_key
+BRIA_API_KEY=your_key_here
 BRIA_BASE_URL=https://engine.prod.bria-api.com
-REPLICATE_API_TOKEN=your_token  # optional, for video
+REPLICATE_API_TOKEN=your_token_here
 ```
 
-## Project Structure
-
-```
-creative-campaign-maker/
-├── CreativeCampaignMaker.py    # Main app
-├── requirements.txt
-├── .env.example
-├── README.md
-├── docs/
-│   └── API_INTEGRATION.md
-└── examples/
-    └── structured_prompts/
-```
+Get your API key:
+1. Go to https://bria.ai/
+2. Sign up
+3. Navigate to API section
+4. Copy your API key
+5. Paste into `.env` file
 
 ## How to Use
 
 **Quick start:**
-1. Load "Premium Coffee" template
-2. Click Generate Storyboard
-3. Wait 2-3 minutes
+1. Launch app: `python3 CreativeCampaignMaker.py`
+2. Open browser to http://localhost:7861
+3. Load "Premium Coffee" template
+4. Click Generate Storyboard
+5. Wait 2-3 minutes
 
 **Custom campaign:**
 ```
@@ -173,12 +170,11 @@ Normal on first request. Auto-retries. Takes 20-30 seconds.
 
 **Module errors**
 ```bash
-pip install -r requirements.txt --force-reinstall
+pip3 install -r requirements.txt --force-reinstall
 ```
 
-## Documentation
-
-See `docs/API_INTEGRATION.md` for detailed API docs.
+**SSL Warning**
+The urllib3 LibreSSL warning is normal on macOS. App still works.
 
 ## Why Bria FIBO
 
@@ -189,7 +185,7 @@ See `docs/API_INTEGRATION.md` for detailed API docs.
 
 ## License
 
-MIT - See LICENSE
+MIT
 
 Images subject to Bria AI license (commercial use allowed).
 
