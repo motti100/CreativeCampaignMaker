@@ -3,18 +3,6 @@
 Creative Campaign Maker - Complete FIBO VLM Integration
 ================================================
 
-<<<<<<< HEAD
-=======
-Installation:
-pip install gradio pillow requests
-
-Environment:
-export BRIA_API_KEY="your_key_here"
-export REPLICATE_API_TOKE="your_token_here"
-
-Usage:
-python fibo_autodirector_complete.py
->>>>>>> 2b1e23d9e91d5c0e2aec7c562af8e5a5ecc644ee
 """
 
 import os, re
@@ -2527,7 +2515,6 @@ if __name__ == "__main__":
     print(f"{APP_NAME} v{APP_VERSION}")
     print("=" * 80)
     print("FIBO VLM Features:")
-<<<<<<< HEAD
     print("  * Prompt Upsampling (Simple → Detailed)")
     print("  * Chained Refinements (Preserves Previous Changes)")
     print("  * Batch Variation Generation")
@@ -2535,15 +2522,6 @@ if __name__ == "__main__":
     print("  * Prompt Library System")
     print("  * Workflow Export")
     print("  * Negative Prompt Presets")
-=======
-    print("  ✅ Prompt Upsampling (Simple → Detailed)")
-    print("  ✅ Chained Refinements (Preserves Previous Changes)")
-    print("  ✅ Batch Variation Generation")
-    print("  ✅ Visual Diff Viewer")
-    print("  ✅ Prompt Library System")
-    print("  ✅ Workflow Export")
-    print("  ✅ Negative Prompt Presets")
->>>>>>> 2b1e23d9e91d5c0e2aec7c562af8e5a5ecc644ee
     print("=" * 80)
     
     demo = create_demo()
